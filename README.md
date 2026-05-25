@@ -53,3 +53,46 @@ Endpoint inicial:
 H2 Console:
 
 - `http://localhost:8080/h2-console`
+
+## Endpoints da missao
+
+- GET `http://localhost:8080/api/sensores`
+- POST `http://localhost:8080/api/sensores`
+- GET `http://localhost:8080/api/eventos`
+- POST `http://localhost:8080/api/eventos`
+- GET `http://localhost:8080/api/alertas`
+- POST `http://localhost:8080/api/alertas`
+
+Exemplo de sensor:
+
+```json
+{
+  "nome": "Sensor de Temperatura",
+  "tipo": "Temperatura",
+  "modulo": "Modulo Orbital",
+  "leitura": 23.5,
+  "unidade": "Celsius",
+  "status": "Ativo"
+}
+```
+
+Exemplo de evento:
+
+```json
+{
+  "sistemaMonitorado": "Sistema de Navegacao",
+  "descricao": "Ajuste automatico de rota executado",
+  "status": "Normal"
+}
+```
+
+Exemplo de alerta:
+
+```json
+{
+  "origem": "Modulo de Energia",
+  "mensagem": "Nivel de bateria abaixo do recomendado",
+  "severidade": "Alta",
+  "resolvido": false
+}
+```
