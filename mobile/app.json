@@ -1,0 +1,17 @@
+{
+  "expo": {
+    "name": "Controle Missao Espacial",
+    "slug": "controle-missao-espacial",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "platforms": [
+      "android",
+      "ios",
+      "web"
+    ],
+    "plugins": [
+      "expo-asset"
+    ]
+  }
+}

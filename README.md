@@ -110,3 +110,13 @@ No emulador Android, usar:
 Em celular fisico, usar o IP da maquina na rede local:
 
 - `http://SEU_IP_LOCAL:8080`
+
+## Mobile inicial
+
+Para rodar o app mobile:
+
+```bash
+cd mobile
+npm install
+npx expo start
+```
