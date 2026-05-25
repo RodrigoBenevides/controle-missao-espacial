@@ -126,3 +126,5 @@ npx expo start
 O app mobile consome os endpoints GET da API para exibir status, sensores, eventos operacionais e alertas criticos.
 
 Para testar a integracao, primeiro rode o backend na porta `8080` e depois inicie o app mobile.
+
+O app mobile tambem permite cadastrar sensores, eventos operacionais e alertas criticos com POST, atualizando as listas em seguida com GET.

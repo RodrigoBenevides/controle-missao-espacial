@@ -1,7 +1,14 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import {
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 
-import { getAlertas } from '../services/api';
+import { createAlerta, getAlertas } from '../services/api';
 import type { AlertaCritico } from '../types/mission';
 
 const apiErrorMessage =
@@ -14,7 +21,13 @@ function formatDate(value?: string) {
 export function AlertasScreen() {
   const [alertas, setAlertas] = useState<AlertaCritico[]>([]);
   const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
+  const [origem, setOrigem] = useState('');
+  const [mensagem, setMensagem] = useState('');
+  const [severidade, setSeveridade] = useState('Alta');
+  const [resolvido, setResolvido] = useState(false);
 
   const loadAlertas = useCallback(async () => {
     try {
@@ -32,6 +45,36 @@ export function AlertasScreen() {
     loadAlertas();
   }, [loadAlertas]);
 
+  async function handleCreateAlerta() {
+    if (!origem.trim() || !mensagem.trim() || !severidade.trim()) {
+      setSuccess(null);
+      setError('Preencha os campos obrigatorios do alerta.');
+      return;
+    }
+
+    try {
+      setSaving(true);
+      setError(null);
+      await createAlerta({
+        origem: origem.trim(),
+        mensagem: mensagem.trim(),
+        severidade: severidade.trim(),
+        resolvido,
+      });
+      setOrigem('');
+      setMensagem('');
+      setSeveridade('Alta');
+      setResolvido(false);
+      setSuccess('Alerta cadastrado com sucesso.');
+      await loadAlertas();
+    } catch {
+      setSuccess(null);
+      setError(apiErrorMessage);
+    } finally {
+      setSaving(false);
+    }
+  }
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Alertas Criticos</Text>
@@ -39,12 +82,56 @@ export function AlertasScreen() {
         Aqui serao exibidos alertas da missao e sua situacao operacional.
       </Text>
 
+      <View style={styles.form}>
+        <Text style={styles.formTitle}>Cadastrar alerta</Text>
+        <TextInput
+          onChangeText={setOrigem}
+          placeholder="Origem"
+          placeholderTextColor="#70849f"
+          style={styles.input}
+          value={origem}
+        />
+        <TextInput
+          multiline
+          onChangeText={setMensagem}
+          placeholder="Mensagem"
+          placeholderTextColor="#70849f"
+          style={[styles.input, styles.textArea]}
+          value={mensagem}
+        />
+        <TextInput
+          onChangeText={setSeveridade}
+          placeholder="Severidade"
+          placeholderTextColor="#70849f"
+          style={styles.input}
+          value={severidade}
+        />
+        <Pressable
+          onPress={() => setResolvido((current) => !current)}
+          style={styles.toggleButton}
+        >
+          <Text style={styles.refreshText}>
+            Situacao: {resolvido ? 'Resolvido' : 'Pendente'}
+          </Text>
+        </Pressable>
+        <Pressable
+          disabled={saving}
+          onPress={handleCreateAlerta}
+          style={[styles.primaryButton, saving ? styles.disabledButton : null]}
+        >
+          <Text style={styles.refreshText}>
+            {saving ? 'Cadastrando...' : 'Cadastrar alerta'}
+          </Text>
+        </Pressable>
+      </View>
+
       <Pressable style={styles.refreshButton} onPress={loadAlertas}>
         <Text style={styles.refreshText}>Atualizar</Text>
       </Pressable>
 
       {loading ? <Text style={styles.info}>Carregando alertas...</Text> : null}
       {error ? <Text style={styles.error}>{error}</Text> : null}
+      {success ? <Text style={styles.success}>{success}</Text> : null}
       {!loading && !error && alertas.length === 0 ? (
         <Text style={styles.info}>Nenhum alerta critico cadastrado ainda.</Text>
       ) : null}
@@ -96,10 +183,36 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     padding: 12,
   },
+  disabledButton: {
+    opacity: 0.6,
+  },
+  form: {
+    backgroundColor: '#0d1d31',
+    borderColor: '#244b68',
+    borderRadius: 8,
+    borderWidth: 1,
+    gap: 10,
+    padding: 16,
+  },
+  formTitle: {
+    color: '#f5f8ff',
+    fontSize: 17,
+    fontWeight: '700',
+  },
   info: {
     color: '#aebed2',
     fontSize: 15,
     lineHeight: 22,
+  },
+  input: {
+    backgroundColor: '#081522',
+    borderColor: '#244b68',
+    borderRadius: 8,
+    borderWidth: 1,
+    color: '#f5f8ff',
+    fontSize: 15,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
   },
   message: {
     color: '#f5f8ff',
@@ -119,6 +232,13 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     paddingHorizontal: 10,
     paddingVertical: 5,
+  },
+  primaryButton: {
+    alignItems: 'center',
+    backgroundColor: '#257fa5',
+    borderRadius: 8,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
   },
   origin: {
     color: '#f5f8ff',
@@ -158,9 +278,30 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '700',
   },
+  success: {
+    backgroundColor: '#113f35',
+    borderColor: '#2b9b7d',
+    borderRadius: 8,
+    borderWidth: 1,
+    color: '#71f0bc',
+    fontSize: 14,
+    lineHeight: 20,
+    padding: 12,
+  },
+  textArea: {
+    minHeight: 84,
+    textAlignVertical: 'top',
+  },
   title: {
     color: '#f5f8ff',
     fontSize: 26,
     fontWeight: '800',
+  },
+  toggleButton: {
+    alignItems: 'center',
+    backgroundColor: '#142f4f',
+    borderRadius: 8,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
   },
 });
