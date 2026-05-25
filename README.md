@@ -96,3 +96,17 @@ Exemplo de alerta:
   "resolvido": false
 }
 ```
+
+## Integracao com o mobile
+
+URL local padrao da API no computador:
+
+- `http://localhost:8080`
+
+No emulador Android, usar:
+
+- `http://10.0.2.2:8080`
+
+Em celular fisico, usar o IP da maquina na rede local:
+
+- `http://SEU_IP_LOCAL:8080`
