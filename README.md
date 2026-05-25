@@ -36,3 +36,20 @@ controle-missao-espacial/
 ## Observacao
 
 Este projeto sera desenvolvido em cards pequenos, seguindo estritamente o enunciado da Global Solution.
+
+## Backend inicial
+
+Para rodar o backend:
+
+```bash
+cd backend
+mvn spring-boot:run
+```
+
+Endpoint inicial:
+
+- GET `http://localhost:8080/api/health`
+
+H2 Console:
+
+- `http://localhost:8080/h2-console`
