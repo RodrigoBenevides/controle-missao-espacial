@@ -2,4 +2,4 @@ Caio Tadeu da Silva Faraleski - RM558795
 Rodrigo Caruzzo Benevides - RM554665
 Eduardo do Nascimento Souza - RM558819
 
-Link do GitHub: pendente
+Link do GitHub: https://github.com/RodrigoBenevides/controle-missao-espacial
