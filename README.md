@@ -120,3 +120,9 @@ cd mobile
 npm install
 npx expo start
 ```
+
+## GET no mobile
+
+O app mobile consome os endpoints GET da API para exibir status, sensores, eventos operacionais e alertas criticos.
+
+Para testar a integracao, primeiro rode o backend na porta `8080` e depois inicie o app mobile.
