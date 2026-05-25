@@ -1,119 +1,66 @@
-# Controle de Missao Espacial
+# Controle de Missão Espacial
 
-Solucao integrada com backend Spring Boot e app mobile React Native + TypeScript para cadastro e consulta de sensores, eventos operacionais e alertas criticos de uma missao espacial.
+Solução integrada com backend Spring Boot e aplicativo mobile React Native + TypeScript para controle de missão espacial.
 
-## Tecnologias previstas
+## Funcionalidades
+
+- Cadastro e consulta de sensores e módulos da missão.
+- Cadastro e consulta de eventos operacionais.
+- Cadastro e consulta de alertas críticos.
+- Dashboard mobile com status da API e quantidades cadastradas.
+- Integração entre mobile e backend via requisições GET e POST.
+
+## Tecnologias
 
 - Java
 - Spring Boot
+- Spring Data JPA
 - H2 Database em modo file
 - React Native
 - TypeScript
 - Expo
 
-## Estrutura inicial
+## Estrutura do projeto
 
 ```text
 controle-missao-espacial/
   backend/
-    src/
-      main/
-        java/
-        resources/
+    src/main/java/
+    src/main/resources/
     pom.xml
+    API_TESTS.md
   mobile/
     src/
+      navigation/
       screens/
       services/
       types/
-      navigation/
     App.tsx
     package.json
   README.md
   entrega.txt
 ```
 
-## Observacao
-
-Este projeto sera desenvolvido em cards pequenos, seguindo estritamente o enunciado da Global Solution.
-
-## Backend inicial
-
-Para rodar o backend:
+## Como rodar o backend
 
 ```bash
 cd backend
 mvn spring-boot:run
 ```
 
-Endpoint inicial:
+O backend roda por padrão em:
 
-- GET `http://localhost:8080/api/health`
+- `http://localhost:8080`
 
 H2 Console:
 
 - `http://localhost:8080/h2-console`
 
-## Endpoints da missao
+Banco H2 em modo file:
 
-- GET `http://localhost:8080/api/sensores`
-- POST `http://localhost:8080/api/sensores`
-- GET `http://localhost:8080/api/eventos`
-- POST `http://localhost:8080/api/eventos`
-- GET `http://localhost:8080/api/alertas`
-- POST `http://localhost:8080/api/alertas`
+- `jdbc:h2:file:./data/missiondb`
 
-Exemplo de sensor:
-
-```json
-{
-  "nome": "Sensor de Temperatura",
-  "tipo": "Temperatura",
-  "modulo": "Modulo Orbital",
-  "leitura": 23.5,
-  "unidade": "Celsius",
-  "status": "Ativo"
-}
-```
-
-Exemplo de evento:
-
-```json
-{
-  "sistemaMonitorado": "Sistema de Navegacao",
-  "descricao": "Ajuste automatico de rota executado",
-  "status": "Normal"
-}
-```
-
-Exemplo de alerta:
-
-```json
-{
-  "origem": "Modulo de Energia",
-  "mensagem": "Nivel de bateria abaixo do recomendado",
-  "severidade": "Alta",
-  "resolvido": false
-}
-```
-
-## Integracao com o mobile
-
-URL local padrao da API no computador:
-
-- `http://localhost:8080`
-
-No emulador Android, usar:
-
-- `http://10.0.2.2:8080`
-
-Em celular fisico, usar o IP da maquina na rede local:
-
-- `http://SEU_IP_LOCAL:8080`
-
-## Mobile inicial
-
-Para rodar o app mobile:
+## Como rodar o mobile
 
 ```bash
 cd mobile
@@ -121,10 +68,26 @@ npm install
 npx expo start
 ```
 
-## GET no mobile
+Para testar a integração, primeiro rode o backend na porta `8080` e depois inicie o app mobile.
 
-O app mobile consome os endpoints GET da API para exibir status, sensores, eventos operacionais e alertas criticos.
+## Endpoints
 
-Para testar a integracao, primeiro rode o backend na porta `8080` e depois inicie o app mobile.
+- GET `/api/health`
+- GET `/api/sensores`
+- POST `/api/sensores`
+- GET `/api/eventos`
+- POST `/api/eventos`
+- GET `/api/alertas`
+- POST `/api/alertas`
 
-O app mobile tambem permite cadastrar sensores, eventos operacionais e alertas criticos com POST, atualizando as listas em seguida com GET.
+## Integração com o mobile
+
+- Web/browser: `http://localhost:8080`
+- Emulador Android: `http://10.0.2.2:8080`
+- Celular físico: usar o IP local da máquina, por exemplo `http://SEU_IP_LOCAL:8080`
+
+## Integrantes
+
+- Caio Tadeu da Silva Faraleski - RM558795
+- Rodrigo Caruzzo Benevides - RM554665
+- Eduardo do Nascimento Souza - RM558819
